@@ -91,9 +91,9 @@ contract StakingRewards is IStakingRewards, ReentrancyGuard, Initializable, Paus
     function totalSupply() external view returns (uint256[] memory supplies) {
         address[] memory assetAddress = new address[](4);
         assetAddress[0] = address(stakingToken);
-        assetAddress[0] = address(BAYC);
-        assetAddress[0] = address(MAYC);
-        assetAddress[0] = address(BAKC);
+        assetAddress[1] = address(BAYC);
+        assetAddress[2] = address(MAYC);
+        assetAddress[3] = address(BAKC);
 
         supplies = new uint[](assetAddress.length);
         for (uint i = 0; i < assetAddress.length; i ++) {
@@ -105,9 +105,9 @@ contract StakingRewards is IStakingRewards, ReentrancyGuard, Initializable, Paus
     function balanceOf(address account) external view returns (uint256[] memory balances) {
         address[] memory assetAddress = new address[](4);
         assetAddress[0] = address(stakingToken);
-        assetAddress[0] = address(BAYC);
-        assetAddress[0] = address(MAYC);
-        assetAddress[0] = address(BAKC);
+        assetAddress[1] = address(BAYC);
+        assetAddress[2] = address(MAYC);
+        assetAddress[3] = address(BAKC);
 
         balances = new uint[](assetAddress.length);
         for (uint i = 0; i < assetAddress.length; i ++) {
@@ -205,7 +205,21 @@ contract StakingRewards is IStakingRewards, ReentrancyGuard, Initializable, Paus
         // update claimableRewards() by first calling Yuga lab's contract to get the total claimable rewards.
         // Then use a predetermined percentage to allocate reward to each pool
 
+        // Need to communicate with Yuga's contract
+        // update claimableRewards() by first calling Yuga lab's contract to get the total claimable rewards.
+        // Then use a predetermined percentage to allocate reward to each pool
 
+
+        //        address[] memory assetAddress = [address(stakingToken), address(BAYC), address(MAYC), address(BAKC)];
+        //        for (uint i = 0; i < assetAddress.length; i++) {
+        //            if (_totalSupply[assetAddress[i]] == 0) {
+        //                rewardPerTokenStored[assetAddress[i]] = 0;
+        //            } else {
+        //                rewardPerTokenStored[assetAddress[i]] + (
+        //                    lastClaimableRewards[assetAddress[i]] / (_totalSupply)
+        //                );
+        //            }
+        //        }
 //        address[] memory assetAddress = [address(stakingToken), address(BAYC), address(MAYC), address(BAKC)];
 //        for (uint i = 0; i < assetAddress.length; i++) {
 //            if (_totalSupply[assetAddress[i]] == 0) {
@@ -221,9 +235,9 @@ contract StakingRewards is IStakingRewards, ReentrancyGuard, Initializable, Paus
     function updateRewardPerToken() private {
         address[] memory assetAddress = new address[](4);
         assetAddress[0] = address(stakingToken);
-        assetAddress[0] = address(BAYC);
-        assetAddress[0] = address(MAYC);
-        assetAddress[0] = address(BAKC);
+        assetAddress[1] = address(BAYC);
+        assetAddress[2] = address(MAYC);
+        assetAddress[3] = address(BAKC);
 
         for (uint i = 0; i < assetAddress.length; i++) {
             if (_totalSupply[assetAddress[i]] == 0) {
