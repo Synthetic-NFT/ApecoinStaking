@@ -1,9 +1,10 @@
 pragma solidity ^0.8.9;
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+//import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
@@ -15,8 +16,8 @@ import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "./interfaces/IStakingRewards.sol";
 
 // https://docs.synthetix.io/contracts/source/contracts/stakingrewards
-contract StakingRewards is IStakingRewards, ReentrancyGuard, Initializable, PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable{
-    using SafeERC20 for IERC20;
+contract StakingRewards is IStakingRewards, Initializable, PausableUpgradeable, OwnableUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable{
+    using SafeERC20Upgradeable for IERC20Upgradeable;
     using EnumerableSet for EnumerableSet.UintSet;
 
     /* ========== STATE VARIABLES ========== */
@@ -25,8 +26,8 @@ contract StakingRewards is IStakingRewards, ReentrancyGuard, Initializable, Paus
     ERC721 public MAYC;
     ERC721 public BAKC;
 
-    IERC20 public rewardsToken;
-    IERC20 public stakingToken;
+    IERC20Upgradeable public rewardsToken;
+    IERC20Upgradeable public stakingToken;
 
     address public vault;
 
@@ -44,13 +45,12 @@ contract StakingRewards is IStakingRewards, ReentrancyGuard, Initializable, Paus
     mapping(address => mapping(address => EnumerableSet.UintSet)) private _userNFTDeposits;
 
     /* ========== CONSTRUCTOR ========== */
-
+    /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
 
     function initialize(
-        address _owner,
         address _rewardsToken,
         address _stakingToken,
         address _BAYC,
@@ -67,8 +67,8 @@ contract StakingRewards is IStakingRewards, ReentrancyGuard, Initializable, Paus
         BAKC = ERC721(_BAKC);
         vault = _vault;
 
-        rewardsToken = IERC20(_rewardsToken);
-        stakingToken = IERC20(_stakingToken);
+        rewardsToken = IERC20Upgradeable(_rewardsToken);
+        stakingToken = IERC20Upgradeable(_stakingToken);
     }
 
     function pause() public onlyOwner {
